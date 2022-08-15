@@ -1,7 +1,7 @@
 const pokebolaOpen = document.querySelector('.pokebola-prymary');
 const tapaPokedex = document.querySelector('.tapa');
 const pokeLink = document.querySelector('.pokebola');
-const pokeClose = document.querySelector('.pokebola-link');
+const pokeClose = document.querySelector('.pokebola-close');
 
 
 pokebolaOpen.addEventListener('click', toggleOpenPokedex);

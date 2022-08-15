@@ -298,6 +298,11 @@ html{
 .active{
     display: flex;
 }
+
+.pokebola-close:hover{
+    background: var(--blue-cool);
+    border-radius: 50%;
+}
 /* Tapas boton */
 
 
@@ -318,3 +323,4 @@ html{
         height: 100vh;
     }
 }
+
