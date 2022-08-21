@@ -74,9 +74,9 @@ const printPokemons = (API) => {
                 listItem.innerHTML = `
                 <div class="card me-2 card-container-poke2" >
                 <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
-                <div class="card-body">
+                <div class="card-body" >
                 <h3 class="card-title">${details.name}</h3>
-                ${details.types.map((type) => `<span>${type.type.name}</span>`)}
+                ${details.types.map((type) => `<span class=${type.type.name}>${type.type.name}</span>`)}
                 <p id="${details.name}" class="card-text"></p>
                 <button onclick=printPokemon(${details.id}) class="btn btn-primary">Show Pokemon</button>
                 </div>

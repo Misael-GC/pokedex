@@ -103,8 +103,8 @@ html{
 }
 
 #poke-img{
-    width: 60%;
-    padding: 0%;
+    width: 150px;
+    height: 150px;
 }
 
 .section-div-botones{
@@ -312,10 +312,9 @@ html{
 #pokemons{
     overflow-x:scroll;
     display: flex;
-    
-    /* flex-wrap: wrap;
-    width: 90%;
-    margin: 0 auto; */
+    /* flex-wrap: wrap;  */
+    width: 99%;
+    margin: 0 auto; 
 }
 
 
@@ -363,4 +362,93 @@ html{
 }
 
 
+/*experimentando*/
 
+
+  footer{
+    font-size: 1rem;
+  }
+  /* Pokemon type */
+.steel,
+.dark,
+.rock,
+.ghost,
+.psychic,
+.fighting,
+.ground,
+.grass,
+.fairy,
+.fire,
+.water,
+.poison,
+.flying,
+.normal,
+.bug,
+.electric,
+.dragon,
+.ice{
+    border-radius: 20%;
+    padding: 3px;
+    margin: 5px;
+    color: var(--gray-conatiner-boton);
+}
+.fairy,
+.grass,
+.bug{
+    border: 1px solid #004b23;
+    background: #38b000;
+  }
+  
+  .fire{
+    border: 1px solid #641220;
+    background: #a11d33;
+  }
+  
+  .water{
+    border: 1px solid #001845;
+    background: #0353a4;
+  }
+  
+  .dark,
+  .poison{
+    border: 1px solid #17202A ;
+    background: #2C3E50 ;
+  }
+.electric,
+  .psychic,
+  .flying{
+    border: 1px solid  #7D6608  ;
+    background: #D4AC0D;
+  }
+  .steel,
+  .rock,
+  .normal{
+    border: 1px solid  #4D5656;
+    background: #99A3A4;
+  }
+
+  .ground{
+    background: #7E5109 ;
+    border: 1px solid  #6E2C00;
+  }
+
+  .fighting{
+    background: #C0392B;
+    border: 1px solid #641E16;
+  }
+
+  .ghost{
+    background-color:  #7D3C98;
+    border: 1px solid #512E5F ;
+  }
+
+
+  .dragon{
+    background: #2980B9 ;
+    border: 1px solid #154360 ;
+  }
+
+  .ice{
+    background: #5DADE2;
+    border: 1px solid #1B4F72;
+  }
