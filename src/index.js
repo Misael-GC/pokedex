@@ -77,7 +77,7 @@ const printPokemons = (API) => {
                 <div class="card-body" >
                 <h3 class="card-title">${details.name}</h3>
                 ${details.types.map((type) => `<span class=${type.type.name}>${type.type.name}</span>`)}
-                <p id="${details.name}" class="card-text"></p>
+                <p id="${details.name}" class="card-text m-3"></p>
                 <button onclick=printPokemon(${details.id}) class="btn btn-primary">Show Pokemon</button>
                 </div>
                 </div>
