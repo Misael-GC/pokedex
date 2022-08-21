@@ -37,7 +37,7 @@ const printPokemon = (pokemon) => {
         }
         currentPokemon = data; //uwu
         console.log(currentPokemon);
-        pokeImg.src = data.sprites.front_default;
+        pokeImg.src = data.sprites.other["official-artwork"].front_default;
         pokePS.textContent = data.stats[0].base_stat; //:o
         pokePS.style.width = `${data.stats[0].base_stat/2}%`;
         pokeDmg.textContent = data.stats[1].base_stat;//owo
@@ -72,12 +72,14 @@ const printPokemons = (API) => {
             .then(details => {
                 // console.log(details.types.map((type) => type.type.name)); //solo es para ver en consola si se esta llamando bien
                 listItem.innerHTML = `
-                <img src=${details.sprites.front_default} alt=${details.name}>
-                <div>
-                <h3>${details.name}</h3>
+                <div class="card" style="width: 15rem;">
+                <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
+                <div class="card-body">
+                <h3 class="card-title">${details.name}</h3>
                 ${details.types.map(type => `<span>${type.type.name}</span>`)}
-                <p id="${details.name}"></p>
-                <button onclick=printPokemon(${details.id})>Show Pokemon</button>
+                <p id="${details.name}" class="card-text"></p>
+                <button onclick=printPokemon(${details.id}) class="btn btn-primary">Show Pokemon</button>
+                </div>
                 </div>
                 `
                 const detailsPokemon = document.querySelector(`#${details.name}`);

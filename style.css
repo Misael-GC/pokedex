@@ -102,6 +102,11 @@ html{
     background-repeat: no-repeat;
 }
 
+#poke-img{
+    width: 60%;
+    padding: 0%;
+}
+
 .section-div-botones{
     width: 90%;
     min-width: 200px;
@@ -324,3 +329,7 @@ html{
     }
 }
 
+#pokemons{
+    overflow-x:scroll;
+    display: flex;
+}
