@@ -72,7 +72,7 @@ const printPokemons = (API) => {
             .then((details) => {
                 // console.log(details.types.map((type) => type.type.name)); //solo es para ver en consola si se esta llamando bien
                 listItem.innerHTML = `
-                <div class="card me-2" >
+                <div class="card me-2 card-container-poke2" >
                 <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
                 <div class="card-body">
                 <h3 class="card-title">${details.name}</h3>
