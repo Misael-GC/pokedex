@@ -9,3 +9,4 @@ const pokePS = document.querySelector("#ps");
 const pokemonsList = document.querySelector("#pokemons");
 const pokeEvol = document.querySelector("#evol");
 const BASE_API = "https://pokeapi.co/api/v2";
+// const pokemons2 = document.querySelector('#pokemons'); //p2

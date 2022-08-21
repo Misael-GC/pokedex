@@ -21,9 +21,9 @@ const fetchData = (API) => {
         .then(data => data)
 };
 
-const writeDescription = (API) => {
+const writeDescription = (API, node) => {
     fetchData(API).then((specie) => {
-      pokeDescription.textContent = specie.flavor_text_entries[0].flavor_text
+      node.textContent = specie.flavor_text_entries[0].flavor_text
     });
   };
 
@@ -47,7 +47,7 @@ const printPokemon = (pokemon) => {
         pokeSpDef.style.width =`${data.stats[4].base_stat/2}%`;
         pokeSpeed.textContent = data.stats[5].base_stat;
         pokeSpeed.style.width =  `${data.stats[5].base_stat/2}%`;
-        writeDescription(data.species.url)
+        writeDescription(data.species.url, pokeDescription)
         pokeName.textContent = data.name;
         const pokeSprites = currentPokemon.sprites//80
         for (const key in pokeSprites) {//80
@@ -58,6 +58,34 @@ const printPokemon = (pokemon) => {
     });
     // console.log(data)
 };
+
+//P2
+const printPokemons = () => {
+    fetchData(`${BASE_API}pokemon?limit=100000&offset=0`) //fetchData llama a la Api de la url actual
+    .then((pokemons) => {
+        console.log(pokemons)
+        pokemons.results.map(pokemon => {
+            const listItem = document.createElement('li')
+            fetchData(pokemon.url) //llamamos a la api con url /pokemon/nombre te dejo la captura en la documentación 
+            .then(details => {
+                // console.log(details.types.map((type) => type.type.name)); //solo es para ver en consola si se esta llamando bien
+                listItem.innerHTML = `
+                <img src=${details.sprites.front_default} alt=${details.name}>
+                <div>
+                <h3>${details.name}</h3>
+                ${details.types.map(type => `<span>${type.type.name}</span>`)}
+                <p id="${details.name}"></p>
+                <button onclick=printPokemon(${details.id})>Show Pokemon</button>
+                </div>
+                `
+                const detailsPokemon = document.querySelector(`#${details.name}`);
+                // console.log(detailsPokemon);
+                writeDescription(details.species.url, detailsPokemon);
+            });
+            pokemonsList.appendChild(listItem)
+        });
+    })
+}
 
 const prevImg = () =>{
     // pokeImg.src = currentPokemon.sprites.back_default;
@@ -90,3 +118,4 @@ const nextPokemon = () => {
 }
 
 printPokemon(1)
+printPokemons();
