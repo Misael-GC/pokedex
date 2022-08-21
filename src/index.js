@@ -14,6 +14,7 @@ const pokemon_API = `${BASE_API}pokemon`;
 let currentPokemon; //uwu
 let sprites = []; //80 va a guardar todos los valores de las img y se´r más facil iterar
 let currentSprite = 0;//90
+let listPokemons ="";//p3
 
 const fetchData = (API) => {
     return  fetch(API)
@@ -60,10 +61,11 @@ const printPokemon = (pokemon) => {
 };
 
 //P2
-const printPokemons = () => {
-    fetchData(`${BASE_API}pokemon?limit=100000&offset=0`) //fetchData llama a la Api de la url actual
+const printPokemons = (API) => {
+    fetchData(API) //fetchData llama a la Api de la url actual
     .then((pokemons) => {
-        console.log(pokemons)
+        // console.log(pokemons)
+        listPokemons = pokemons;
         pokemons.results.map(pokemon => {
             const listItem = document.createElement('li')
             fetchData(pokemon.url) //llamamos a la api con url /pokemon/nombre te dejo la captura en la documentación 
@@ -117,5 +119,23 @@ const nextPokemon = () => {
     printPokemon(currentPokemon.id + 1)
 }
 
+const nextPokemons = () => {
+    fetchData(listPokemons.next)
+    .then(newData => {
+        // console.log(newData);
+        printPokemons(newData.next)
+        listPokemons=""
+    });
+}
+
+const prevPokemons = () =>{
+    fetchData(listPokemons.next)
+    .then(newData => {
+        printPokemons(newData.previous)
+        // console.log(newData.previous)
+        listPokemons=""
+    });
+}
+
 printPokemon(1)
-printPokemons();
+printPokemons(`${BASE_API}pokemon?limit=23&offset=0`);
