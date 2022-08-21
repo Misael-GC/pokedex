@@ -320,55 +320,11 @@ html{
 
 #pokemons li .card{
     width: 15rem;
-    height:320px;
+    min-height:330px;
 }
 
 /* Pokemon type */
 
-.grass{
-    border: 5px solid #004b23;
-    background: #38b000;
-  }
-  
-  .fire{
-    border: 5px solid #641220;
-    background: #a11d33;
-  }
-  
-  .water{
-    border: 5px solid #001845;
-    background: #0353a4;
-  }
-
-/* Tapas boton */
-
-
-@media screen and (min-width: 768px) {
-    .tapa{
-        height: 128vh;
-    }
-}
-
-@media screen and (min-width: 900px) {
-    .tapa{
-        height: 100vh;
-    }
-}
-
-@media screen and (min-width: 1000px) {
-    .tapa{
-        height: 100vh;
-    }
-}
-
-
-/*experimentando*/
-
-
-  footer{
-    font-size: 1rem;
-  }
-  /* Pokemon type */
 .steel,
 .dark,
 .rock,
@@ -452,3 +408,36 @@ html{
     background: #5DADE2;
     border: 1px solid #1B4F72;
   }
+
+
+/* Tapas boton */
+
+
+@media screen and (min-width: 768px) {
+    .tapa{
+        height: 128vh;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .tapa{
+        height: 100vh;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .tapa{
+        height: 100vh;
+    }
+}
+
+
+/*experimentando*/
+
+
+  footer{
+    font-size: 1rem;
+  }
+  /* Pokemon type */
+
+  
