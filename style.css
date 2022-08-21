@@ -308,6 +308,39 @@ html{
     background: var(--blue-cool);
     border-radius: 50%;
 }
+/*scroll pokemones*/
+#pokemons{
+    overflow-x:scroll;
+    display: flex;
+    
+    /* flex-wrap: wrap;
+    width: 90%;
+    margin: 0 auto; */
+}
+
+
+#pokemons li .card{
+    width: 15rem;
+    height:320px;
+}
+
+/* Pokemon type */
+
+.grass{
+    border: 5px solid #004b23;
+    background: #38b000;
+  }
+  
+  .fire{
+    border: 5px solid #641220;
+    background: #a11d33;
+  }
+  
+  .water{
+    border: 5px solid #001845;
+    background: #0353a4;
+  }
+
 /* Tapas boton */
 
 
@@ -329,7 +362,5 @@ html{
     }
 }
 
-#pokemons{
-    overflow-x:scroll;
-    display: flex;
-}
+
+

@@ -66,17 +66,17 @@ const printPokemons = (API) => {
     .then((pokemons) => {
         // console.log(pokemons)
         listPokemons = pokemons;
-        pokemons.results.map(pokemon => {
+        pokemons.results.map((pokemon)=> {
             const listItem = document.createElement('li')
             fetchData(pokemon.url) //llamamos a la api con url /pokemon/nombre te dejo la captura en la documentación 
-            .then(details => {
+            .then((details) => {
                 // console.log(details.types.map((type) => type.type.name)); //solo es para ver en consola si se esta llamando bien
                 listItem.innerHTML = `
-                <div class="card" style="width: 15rem;">
+                <div class="card me-2" >
                 <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
                 <div class="card-body">
                 <h3 class="card-title">${details.name}</h3>
-                ${details.types.map(type => `<span>${type.type.name}</span>`)}
+                ${details.types.map((type) => `<span>${type.type.name}</span>`)}
                 <p id="${details.name}" class="card-text"></p>
                 <button onclick=printPokemon(${details.id}) class="btn btn-primary">Show Pokemon</button>
                 </div>
@@ -96,7 +96,7 @@ const prevImg = () =>{
     if(currentSprite === 0){ //90 si estamos en el limite hacia atras, tenemos que volver a la pposition más grande del array
         currentSprite = sprites.length - 1;// le restamos 1 porque esta API  no cuenta el cero
     }else{//si es > 0 
-        currentSprite --
+        currentSprite --;
     }
     pokeImg.src = sprites[currentSprite];
 }
@@ -122,20 +122,21 @@ const nextPokemon = () => {
 }
 
 const nextPokemons = () => {
+    pokemonsList.innerHTML = "";//quitar los pokemones anteriores de la lista
     fetchData(listPokemons.next)
     .then(newData => {
         // console.log(newData);
         printPokemons(newData.next)
-        listPokemons=""
     });
 }
 
 const prevPokemons = () =>{
+    pokemonsList.innerHTML = "";
+    
     fetchData(listPokemons.next)
     .then(newData => {
         printPokemons(newData.previous)
         // console.log(newData.previous)
-        listPokemons=""
     });
 }
 
