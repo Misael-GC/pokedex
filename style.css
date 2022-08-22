@@ -453,8 +453,9 @@ html{
     /* background-image: url('./img/pokebola.png'); */
     /* background-size: contain;
     background-repeat: no-repeat; */
-    /* background-image: linear-gradient(to top, red 0%, black 100%); */
-    background: #cacece;    border-radius: 20px;
+    /* background-image: linear-gradient(to top, red 0%, white 100%); */
+    background: #cacece;    
+    border-radius: 20px;
 }
 
 

@@ -35,7 +35,7 @@ const printPokemon = (pokemon) => {
         if(sprites.length > 0){
             sprites = []
         }
-        currentPokemon = data; //uwu
+        currentPokemon = data; //uwu aqui puedes conectar el buscador
         console.log(currentPokemon);
         pokeImg.src = data.sprites.other["official-artwork"].front_default;
         pokePS.textContent = data.stats[0].base_stat; //:o
@@ -71,6 +71,7 @@ const printPokemons = (API) => {
             fetchData(pokemon.url) //llamamos a la api con url /pokemon/nombre te dejo la captura en la documentación 
             .then((details) => {
                 // console.log(details.types.map((type) => type.type.name)); //solo es para ver en consola si se esta llamando bien
+                // listItem.classList.add(details.types[0].type.name)//este me va a dar el color de las targetas que cubran toda la targeta
                 listItem.innerHTML = `
                 <div class="card me-2 card-container-poke2" >
                 <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
@@ -81,7 +82,7 @@ const printPokemons = (API) => {
                 <button onclick=printPokemon(${details.id}) class="btn btn-primary">Show Pokemon</button>
                 </div>
                 </div>
-                `
+                `;
                 const detailsPokemon = document.querySelector(`#${details.name}`);
                 // console.log(detailsPokemon);
                 writeDescription(details.species.url, detailsPokemon);
@@ -137,6 +138,7 @@ const prevPokemons = () =>{
     .then(newData => {
         printPokemons(newData.previous)
         // console.log(newData.previous)
+        
     });
 }
 
