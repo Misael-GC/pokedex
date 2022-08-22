@@ -79,6 +79,7 @@ const printPokemons = (API) => {
                 listItem.innerHTML = `
                 <div class="card me-2 card-container-poke2" >
                 <img src=${details.sprites.other["official-artwork"].front_default} alt=${details.name} class="card-img-top">
+                <p>#${details.id}</p>
                 <div class="card-body" >
                 <h3 class="card-title">${details.name}</h3>
                 ${details.types.map((type) => `<span class=${type.type.name}>${type.type.name}</span>`)}
@@ -157,4 +158,4 @@ const searchPokemon = () =>{
 }
 
 printPokemon(1)
-printPokemons(`${BASE_API}pokemon?limit=23&offset=0`);
+printPokemons(`${BASE_API}pokemon?limit=10228&offset=0`);
