@@ -158,4 +158,4 @@ const searchPokemon = () =>{
 }
 
 printPokemon(1)
-printPokemons(`${BASE_API}pokemon?limit=10228&offset=0`);
+printPokemons(`${BASE_API}pokemon?limit=500&offset=0`);
