@@ -489,6 +489,32 @@ html{
     font-size: 2rem;
     background-color: #ee081b;
   }
-  /* Pokemon type */
 
-  
+
+
+
+
+
+
+
+  /* Pokemon segunda sección */
+  .logo-pokemon{
+    width: 250px;
+    height: 40px;
+    margin: 20px 120px;
+  }
+
+.section-list-pokemon .section-list-buttons{
+    margin: 20px 30px;
+    padding: 0px 97px;
+}
+
+.section-list-buttons button{
+    border: none;
+    background: #ffffff;
+}
+
+.fa-circle-arrow-left,
+.fa-circle-arrow-right{
+    font-size: 3rem;
+}
