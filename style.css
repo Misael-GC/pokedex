@@ -442,6 +442,7 @@ html{
 .container::-webkit-scrollbar{
     background-color: rgb(226, 223, 223);
     border-radius: 20px;
+    height: 25px;
 }
 
 .container::-webkit-scrollbar-track{
