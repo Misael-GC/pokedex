@@ -146,6 +146,11 @@ html{
 
 .pokemon-description{
     text-transform: lowercase;
+    background: #30a7d7;
+    border-radius: 5%;
+    padding: 5px 10px;
+    font-size: medium;
+    margin-bottom: 20px;
 }
 
 /* texto descripción */
