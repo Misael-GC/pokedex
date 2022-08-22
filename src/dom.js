@@ -4,8 +4,8 @@ const pokeLink = document.querySelector('.pokebola');
 const pokeClose = document.querySelector('.pokebola-close');
 
 
-pokebolaOpen.addEventListener('click', toggleOpenPokedex);
-pokeClose.addEventListener('click', toggleClosePokedex)
+// pokebolaOpen.addEventListener('click', toggleOpenPokedex);
+// pokeClose.addEventListener('click', toggleClosePokedex)
 
 function toggleOpenPokedex(){
     const toggle = tapaPokedex.classList.toggle('inactive');
