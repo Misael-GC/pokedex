@@ -2,6 +2,7 @@
 // const pokeDesc = document.querySelector("#desc");
 // const pokeDmg = document.querySelector("#dmg");
 // const pokeDef = document.querySelector("#dfs");
+const pokeName = document.querySelector('#pokeName');//new
 const pokeSpeed = document.querySelector("#speed");
 const pokeSpDef = document.querySelector("#sp-def");
 const pokeSpAtck = document.querySelector("#sp-atck");

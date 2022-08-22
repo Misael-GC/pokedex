@@ -36,7 +36,7 @@ const printPokemon = (pokemon) => {
             sprites = []
         }
         currentPokemon = data; //uwu aqui puedes conectar el buscador
-        console.log(currentPokemon);
+        // console.log(currentPokemon);
         pokeImg.src = data.sprites.other["official-artwork"].front_default;
         pokePS.textContent = data.stats[0].base_stat; //:o
         pokePS.style.width = `${data.stats[0].base_stat/2}%`;
@@ -133,13 +133,23 @@ const nextPokemons = () => {
 
 const prevPokemons = () =>{
     pokemonsList.innerHTML = "";
-    
     fetchData(listPokemons.next)
     .then(newData => {
         printPokemons(newData.previous)
         // console.log(newData.previous)
         
     });
+}
+
+const searchPokemon = () =>{
+    event.preventDefault();//buscar en google, pero creo es para evitar que te redireccione
+    // console.log(event.target.search); //name del input es search, me trae la etiqueta que tiene el input
+    const input = event.target.search;
+    // console.log(input.value); //imprime el valor del input
+    fetchData(`${BASE_API}pokemon/${input.value}`)
+    .then((data) =>
+    // console.log(data)
+    printPokemon(data.name))
 }
 
 printPokemon(1)
