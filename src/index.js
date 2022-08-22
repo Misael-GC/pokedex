@@ -62,8 +62,12 @@ const printPokemon = (pokemon) => {
 
 //P2
 const printPokemons = (API) => {
+    const loader = document.createElement('li');
+    loader.classList.add('loader');
+    pokemonsList.append(loader);
     fetchData(API) //fetchData llama a la Api de la url actual
     .then((pokemons) => {
+        loader.remove();
         // console.log(pokemons)
         listPokemons = pokemons;
         pokemons.results.map((pokemon)=> {
@@ -133,7 +137,7 @@ const nextPokemons = () => {
 
 const prevPokemons = () =>{
     pokemonsList.innerHTML = "";
-    fetchData(listPokemons.next)
+    fetchData(listPokemons.previous)
     .then(newData => {
         printPokemons(newData.previous)
         // console.log(newData.previous)

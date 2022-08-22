@@ -333,9 +333,17 @@ html{
 
 #pokemons li .card{
     width: 16rem;
-    min-height:350px;
+    min-height:320px;
+    justify-content: center;
+    align-items: center;
 }
 
+/*imagen de la card pokemon*/
+
+.card img{
+    /* background-color: black; */
+    width: 120px;
+}
 /* Pokemon type */
 
 .steel,
@@ -422,6 +430,14 @@ html{
     border: 1px solid #1B4F72;
   }
 
+  /*loader*/
+  #pokemons li.loader{
+    background-image: url(./img/pokebola.png);
+    display: block;
+    width: 32px;
+    min-height: 32px;
+    margin: 0 auto;
+  }
 
 /* Tapas boton */
 
