@@ -22,6 +22,15 @@ let currentOffset = 0;
 const limit = 20;
 let filteredPokemonList = []; // Holds matching pokemons when filtering
 
+// Battle Simulator State
+let simulatorState = {
+    playerHP: 100,
+    opponentHP: 100,
+    opponentName: '',
+    opponentImg: '',
+    playerMoves: []
+};
+
 // Cyber Beep Synthesizer (Web Audio API)
 const playSound = (type) => {
     try {
@@ -174,7 +183,10 @@ const printEvolutionChain = (speciesUrl) => {
     container.innerHTML = `<div class="loader-sm"></div>`;
 
     fetchData(speciesUrl)
-        .then(species => fetchData(species.evolution_chain.url))
+        .then(species => {
+            updateHabitatRadar(species);
+            return fetchData(species.evolution_chain.url);
+        })
         .then(chainData => {
             const steps = [];
             const traverse = (node) => {
@@ -189,9 +201,7 @@ const printEvolutionChain = (speciesUrl) => {
             };
             traverse(chainData.chain);
             
-            // Build elements
             container.innerHTML = '';
-            
             const fetchStepsDetails = steps.map(step => fetchData(`${pokemon_API}/${step.id}`));
             
             Promise.all(fetchStepsDetails).then(pokes => {
@@ -215,6 +225,172 @@ const printEvolutionChain = (speciesUrl) => {
             console.error('Error loading evolution chain:', err);
             container.innerHTML = 'Cadena evolutiva no disponible.';
         });
+};
+
+// Update Habitat radar biome details
+const updateHabitatRadar = (speciesData) => {
+    const radarVal = document.getElementById('radar-habitat-val');
+    const biome = speciesData.habitat ? speciesData.habitat.name : 'desconocido';
+    if (radarVal) {
+        radarVal.textContent = biome.toUpperCase();
+    }
+    
+    // Draw coordinates randomly
+    const dotsContainer = document.querySelector('.radar-dots');
+    if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'radar-dot';
+            dot.style.top = `${Math.floor(Math.random() * 70) + 15}%`;
+            dot.style.left = `${Math.floor(Math.random() * 70) + 15}%`;
+            dotsContainer.appendChild(dot);
+        }
+    }
+};
+
+// Generate QR specimen
+const updateQRCode = (id) => {
+    const qrImg = document.getElementById('specimen-qr');
+    if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://pokemon.com/es/pokedex/${id}&color=00f2fe&bgcolor=060913`;
+    }
+};
+
+// Load Moves Table
+const loadMoveset = (moves) => {
+    const container = document.getElementById('moves-table-body');
+    if (!container) return;
+    container.innerHTML = '<tr><td colspan="5"><div class="loader-sm"></div></td></tr>';
+
+    const topMoves = moves.slice(0, 6);
+    const promises = topMoves.map(m => fetchData(m.move.url));
+
+    Promise.all(promises)
+        .then(results => {
+            container.innerHTML = '';
+            results.forEach((moveData, i) => {
+                const method = moves[i].version_group_details[0].move_learn_method.name;
+                const level = moves[i].version_group_details[0].level_learned_at;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${moveData.name.replace(/-/g, ' ').toUpperCase()}</td>
+                    <td><span class="type-badge ${moveData.type.name}">${moveData.type.name}</span></td>
+                    <td>${moveData.power || '-'}</td>
+                    <td>${moveData.accuracy ? moveData.accuracy + '%' : '-'}</td>
+                    <td>${level > 0 ? 'NIVEL ' + level : method.toUpperCase()}</td>
+                `;
+                container.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching moveset details:', err);
+            container.innerHTML = '<tr><td colspan="5">Error de enlace de base de datos de movimientos.</td></tr>';
+        });
+};
+
+// Combat Simulation Engine
+const startBattleSimulation = () => {
+    if (!currentPokemon) return;
+    playSound('scan');
+    const battleLog = document.getElementById('battle-log');
+    if (battleLog) {
+        battleLog.innerHTML = `<p class="log-entry system-msg">[SYSTEM] ANALIZANDO SEÑAL DE OPONENTE...</p>`;
+    }
+
+    // Starters / popular pokemon ids for simulator
+    const opponents = [4, 7, 9, 25, 133, 143, 150]; 
+    const opponentId = opponents[Math.floor(Math.random() * opponents.length)];
+
+    fetchData(`${pokemon_API}/${opponentId}`)
+        .then(opp => {
+            simulatorState.playerHP = 100;
+            simulatorState.opponentHP = 100;
+            simulatorState.opponentName = opp.name.toUpperCase();
+            simulatorState.opponentImg = opp.sprites.front_default || opp.sprites.other["official-artwork"].front_default;
+
+            const playerMovesRaw = currentPokemon.moves.slice(0, 4);
+            const promises = playerMovesRaw.map(m => fetchData(m.move.url));
+
+            return Promise.all(promises).then(moves => {
+                simulatorState.playerMoves = moves.map(m => ({
+                    name: m.name.replace(/-/g, ' '),
+                    type: m.type.name,
+                    power: m.power || 45
+                }));
+
+                // Render Simulation Panel
+                document.getElementById('opp-name').textContent = simulatorState.opponentName;
+                document.getElementById('opp-img').src = simulatorState.opponentImg;
+                document.getElementById('player-hp-bar').style.width = '100%';
+                document.getElementById('opp-hp-bar').style.width = '100%';
+
+                const btnContainer = document.getElementById('battle-moves-container');
+                btnContainer.innerHTML = '';
+
+                simulatorState.playerMoves.forEach(move => {
+                    const btn = document.createElement('button');
+                    btn.className = `cyber-btn-sm type-badge ${move.type}`;
+                    btn.style.cursor = 'pointer';
+                    btn.style.textTransform = 'uppercase';
+                    btn.style.padding = '8px 12px';
+                    btn.textContent = move.name;
+                    btn.onclick = () => executePlayerTurn(move);
+                    btnContainer.appendChild(btn);
+                });
+
+                appendBattleLog(`ENTRENADOR DETECTADO: ${simulatorState.opponentName}`);
+                appendBattleLog(`INICIANDO DIAGNÓSTICO EN TIEMPO REAL...`);
+            });
+        })
+        .catch(err => {
+            console.error('Simulator init error:', err);
+        });
+};
+
+const executePlayerTurn = (move) => {
+    if (simulatorState.opponentHP <= 0 || simulatorState.playerHP <= 0) return;
+    playSound('click');
+
+    let dmg = Math.floor((move.power / 7) + (Math.random() * 5));
+    const isCritical = Math.random() > 0.85;
+    if (isCritical) dmg = Math.floor(dmg * 1.5);
+
+    simulatorState.opponentHP = Math.max(0, simulatorState.opponentHP - dmg);
+    document.getElementById('opp-hp-bar').style.width = `${simulatorState.opponentHP}%`;
+
+    appendBattleLog(`${currentPokemon.name.toUpperCase()} usó ${move.name.toUpperCase()} e infligió ${dmg} dmg.${isCritical ? ' ¡CRÍTICO!' : ''}`);
+
+    if (simulatorState.opponentHP <= 0) {
+        playSound('scan');
+        appendBattleLog(`[ÉXITO] ¡SIMULACIÓN TERMINADA: VICTORIA DE ${currentPokemon.name.toUpperCase()}!`);
+        return;
+    }
+
+    // Opponent turn
+    setTimeout(() => {
+        if (simulatorState.playerHP <= 0) return;
+        const oppDmg = Math.floor(8 + (Math.random() * 7));
+        simulatorState.playerHP = Math.max(0, simulatorState.playerHP - oppDmg);
+        document.getElementById('player-hp-bar').style.width = `${simulatorState.playerHP}%`;
+        playSound('error');
+        appendBattleLog(`${simulatorState.opponentName} contraatacó con EMBESTIDA! Daño recibido: ${oppDmg}`);
+
+        if (simulatorState.playerHP <= 0) {
+            appendBattleLog(`[ALERTA] SIMULACIÓN COMPLETADA: DETECTADA DERROTA.`);
+        }
+    }, 800);
+};
+
+const appendBattleLog = (msg) => {
+    const log = document.getElementById('battle-log');
+    if (log) {
+        const entry = document.createElement('p');
+        entry.className = 'log-entry';
+        entry.textContent = `> ${msg}`;
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+    }
 };
 
 const writeDescription = (API, node) => {
@@ -297,6 +473,11 @@ const printPokemon = (pokemon) => {
             // Load extra tabs
             printTypeEffectiveness(data.types);
             printEvolutionChain(data.species.url);
+            updateQRCode(data.id);
+            loadMoveset(data.moves);
+            
+            // Start simulation
+            setTimeout(startBattleSimulation, 500);
         })
         .catch(err => {
             console.error('Error printing pokemon:', err);

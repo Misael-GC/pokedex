@@ -911,4 +911,155 @@ body.light-theme {
     }
 }
 
+/* Moveset Table Styles */
+.cyber-table th {
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.cyber-table td, .cyber-table th {
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(0, 242, 254, 0.05);
+    color: var(--text-main);
+}
+
+.cyber-table tbody tr:hover {
+    background-color: rgba(0, 242, 254, 0.02);
+}
+
+/* Radar Animations & Styles */
+@keyframes radarSweep {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.radar-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--neon-cyan);
+    animation: blinkRadar 1.5s infinite alternate;
+}
+
+@keyframes blinkRadar {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
+/* Simulator Logs Styles */
+.log-entry {
+    margin: 0;
+    word-break: break-all;
+}
+
+.log-entry.system-msg {
+    color: #00ff87;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   100% MOBILE RESPONSIVENESS OVERRIDES
+   ========================================================================== */
+@media (max-width: 600px) {
+    /* Header layout wraps cleanly to avoid overflow */
+    .terminal-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding-bottom: 20px;
+    }
+    
+    .terminal-header::after {
+        width: 100%;
+    }
+    
+    .header-left {
+        gap: 10px;
+    }
+    
+    .terminal-title h1 {
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+    
+    .header-nav {
+        justify-content: flex-end;
+    }
+
+    /* Container pads tightly on small mobile displays */
+    .terminal-container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    /* Search controls adjust stacked layout */
+    .search-box {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-search {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Navigator buttons compact scaling */
+    .pokemon-navigator {
+        gap: 5px;
+    }
+    
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+    }
+    
+    .status-pill {
+        font-size: 0.55rem;
+        padding: 6px 10px;
+        text-align: center;
+    }
+
+    /* Simulator action list wraps to 1 column */
+    .battle-actions-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Moveset table layout wraps within responsive overflow container */
+    .cyber-table {
+        min-width: 480px;
+    }
+    
+    .cyber-table th, .cyber-table td {
+        padding: 8px 4px;
+        font-size: 0.65rem;
+    }
+}
+
+/* Custom styled action buttons in the simulator for high contrast */
+.battle-actions-grid button {
+    background-color: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    padding: 8px 12px !important;
+    font-family: var(--font-cyber);
+    font-size: 0.65rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.battle-actions-grid button:hover {
+    border-color: var(--neon-cyan) !important;
+    box-shadow: 0 0 10px var(--border-glow) !important;
+    background-color: rgba(0, 242, 254, 0.05) !important;
+    color: var(--neon-cyan) !important;
+}
+
+
+
+
 

@@ -170,16 +170,89 @@
 
         <!-- Mid-Level Diagnostics: Spans full width dynamically -->
         <section class="diagnostics-row">
-            <!-- Combat Type Effectiveness -->
+            <!-- Left Card: Combat Multipliers & Evolutions -->
             <div class="stats-card">
                 <h3 class="panel-subtitle">// DIAGNÓSTICO DE COMBATE (MULTIPLICADORES)</h3>
                 <div id="effectiveness-container" class="effectiveness-box"></div>
-            </div>
-
-            <!-- Evolution Chain Panel -->
-            <div class="stats-card">
+                <hr class="cyber-divider" style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
                 <h3 class="panel-subtitle">// SECUENCIA DE EVOLUCIÓN</h3>
                 <div id="evolutions-list" class="evolutions-grid"></div>
+            </div>
+
+            <!-- Right Card: Battle Simulator -->
+            <div class="stats-card">
+                <h3 class="panel-subtitle">// SIMULADOR DE COMBATE EN TIEMPO REAL</h3>
+                <div class="simulator-container">
+                    <div class="sim-header" style="display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-input); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                        <div class="sim-opponent" style="flex-grow: 1;">
+                            <span id="opp-name" style="font-family: var(--font-cyber); font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 4px;">OPONENTE</span>
+                            <div class="custom-progress" style="background-color: rgba(255,255,255,0.05);"><div id="opp-hp-bar" class="progress-fill hp-color" style="width: 100%"></div></div>
+                        </div>
+                        <img id="opp-img" src="" alt="Oponente" style="width: 55px; height: 55px; object-fit: contain; margin-left: 12px; filter: drop-shadow(0 0 6px var(--neon-cyan));">
+                    </div>
+                    <div class="sim-log-panel" id="battle-log" style="height: 110px; background-color: #03060c; border: 1px solid rgba(0,242,254,0.1); border-radius: 4px; padding: 10px; overflow-y: auto; font-family: monospace; font-size: 0.7rem; color: #00f2fe; line-height: 1.4; display: flex; flex-direction: column; gap: 4px;">
+                        <p class="log-entry system-msg">[SYSTEM] Esperando inicialización...</p>
+                    </div>
+                    <div class="sim-player-bar" style="margin-top: 12px;">
+                        <span class="player-label" style="font-family: var(--font-cyber); font-size: 0.65rem; color: var(--text-muted); display: block; margin-bottom: 4px;">MI POKÉMON (HP)</span>
+                        <div class="custom-progress" style="background-color: rgba(255,255,255,0.05);"><div id="player-hp-bar" class="progress-fill hp-color" style="width: 100%"></div></div>
+                    </div>
+                    <div class="sim-actions" style="margin-top: 15px;">
+                        <span class="actions-title" style="font-family: var(--font-cyber); font-size: 0.65rem; color: var(--text-muted); display: block; margin-bottom: 8px;">SELECCIONAR ATAQUE DE DIAGNÓSTICO:</span>
+                        <div id="battle-moves-container" class="battle-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lower Diagnostics Row (Moves & Radar/QR) -->
+        <section class="diagnostics-row" style="margin-top: 25px;">
+            <!-- Moveset Terminal -->
+            <div class="stats-card" style="flex: 2; min-width: 280px;">
+                <h3 class="panel-subtitle">// BASE DE MOVIMIENTOS REGISTRADOS</h3>
+                <div class="table-responsive" style="overflow-x: auto; width: 100%;">
+                    <table class="cyber-table" style="width: 100%; border-collapse: collapse; font-family: var(--font-standard); font-size: 0.75rem; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-family: var(--font-cyber); font-size: 0.65rem;">
+                                <th style="padding: 10px 5px;">ATAQUE</th>
+                                <th style="padding: 10px 5px;">TIPO</th>
+                                <th style="padding: 10px 5px;">PODER</th>
+                                <th style="padding: 10px 5px;">PREC.</th>
+                                <th style="padding: 10px 5px;">MÉTODO / NIVEL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="moves-table-body">
+                            <!-- JS loaded rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Radar & QR Specimen Card -->
+            <div class="stats-card" style="flex: 1.2; min-width: 280px; display: flex; gap: 20px; flex-wrap: wrap;">
+                <!-- Radar Panel -->
+                <div class="radar-card-half" style="flex: 1; min-width: 120px; display: flex; flex-direction: column;">
+                    <h3 class="panel-subtitle" style="margin-bottom: 10px;">// RADAR DE HÁBITAT</h3>
+                    <div class="radar-scope" style="position: relative; width: 100px; height: 100px; border-radius: 50%; border: 1px solid var(--border-color); background-color: var(--bg-input); margin: 0 auto 10px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <div class="radar-sweep" style="position: absolute; width: 100%; height: 100%; background: conic-gradient(from 0deg at 50% 50%, rgba(0,242,254,0.15) 0deg, transparent 90deg); border-radius: 50%; animation: radarSweep 4s infinite linear;"></div>
+                        <div class="radar-crosshair" style="position: absolute; width: 100%; height: 1px; background-color: rgba(0,242,254,0.15);"></div>
+                        <div class="radar-crosshair" style="position: absolute; height: 100%; width: 1px; background-color: rgba(0,242,254,0.15);"></div>
+                        <div class="radar-dots" style="position: absolute; top:0; left:0; width:100%; height:100%;"></div>
+                    </div>
+                    <div class="radar-data" style="text-align: center; margin-top: auto;">
+                        <span class="radar-label" style="font-family: var(--font-cyber); font-size: 0.55rem; color: var(--text-muted); display: block; margin-bottom: 4px;">BIOMA RASTREADO:</span>
+                        <span id="radar-habitat-val" class="status-pill text-neon" style="color: var(--neon-cyan); border-color: var(--border-glow); display: inline-block; font-size: 0.75rem;">DESCONOCIDO</span>
+                    </div>
+                </div>
+
+                <!-- QR Card Panel -->
+                <div class="qr-card-half" style="flex: 1; min-width: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px dashed var(--border-color); padding-left: 15px;">
+                    <h3 class="panel-subtitle" style="align-self: flex-start; margin-bottom: 10px;">// REGISTRO QR</h3>
+                    <div class="qr-frame" style="background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: 4px; padding: 8px; display: flex; align-items: center; justify-content: center; width: 100px; height: 100px;">
+                        <img id="specimen-qr" src="" alt="Código QR" style="width: 100%; height: 100%; object-fit: contain; filter: brightness(0.95) contrast(1.15);">
+                    </div>
+                    <span class="qr-sub" style="font-size: 0.55rem; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.5px; font-family: var(--font-cyber);">ID_SPECIMEN_VERIFIED</span>
+                </div>
             </div>
         </section>
 
