@@ -1,182 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Pokédex Terminal // v2.0</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/a3356dc614.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="icon" href="./img/pokebola.png">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <header class="header--container">
-        <div class="header--Portafolio">
-            <div class="header--boton_container">
-                <i class="fa-solid fa-circle parpadea "></i>
-            </div>
-        </div>
-        <nav>
-            <a href="https://github.com/Misael-GC" class="header--nav_contact-github" ><i class="fa-brands fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/misael-g%C3%B3mez-cuautle-5976491b9/" class="header--nav_contact"><img src="./img/linkedin.png" alt="linkedin"></a>
-            <a href="https://twitter.com/MisaelG51069440" class="header--nav_contact"><img src="./img/gorjeo.png" alt="linkedin"></a>
-        </nav>
-    </header>
-    <main>
-         <!-- <div class="tapa inactive"> 
-            <div  class="pokebola-prymary">
-                <img src="./img/pokebola.png" alt="pokebola" class="pokebola-1 parpadea"> 
-            </div>
-        </div>  -->
-        <section class="pantallas-container " >
-            <article class="pantalla-pokemones-card">
-                <form class="d-flex" role="search" onsubmit='searchPokemon()'>
-                    <input class="form-control me-2" type="search" placeholder="Buscar por número de id o nombre" aria-label="Search" name="search">
-                    <button class="btn btn-outline-success" type="submit">Search </button>
-                  </form>
-                <div class="buttons-container_up">
-                    <button class="pokemon-button_up" onclick="prevImg()">
-                        <i class="fa-solid fa-backward-step"></i>
-                    </button>
-                    <button class="pokemon-button_up" onclick="nextImg()">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </button>
+    <div class="terminal-container">
+        <!-- Terminal Header -->
+        <header class="terminal-header">
+            <div class="header-left">
+                <div class="pulse-indicator">
+                    <span class="pulse-core"></span>
+                    <span class="pulse-ring"></span>
                 </div>
+                <div class="terminal-title">
+                    <h1>POKÉDEX // TERMINAL OS</h1>
+                    <span class="terminal-status">SYSTEM_ONLINE // SECURE_CONN</span>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <button id="theme-toggle" class="cyber-btn-sm" aria-label="Toggle Theme" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+                <a href="https://github.com/Misael-GC" target="_blank" class="nav-icon" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/misael-g%C3%B3mez-cuautle-5976491b9/" target="_blank" class="nav-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </nav>
+        </header>
 
-                <div class="pantalla-pokemones-card_principal">
-                    <img src="" alt="Name pokemon" id="poke-img">
-                </div>
-                <div class="pokemon-next">
-                    <div class="pokemon-container_back">
-                        <button class="pokedex-button" onclick="prevPokemon()">
-                            <i class="fa-solid fa-backward-fast"></i>
-                         </button>
-                        <button class="pokedex-button" onclick="nextPokemon()">
-                            <i class="fa-solid fa-forward-fast"></i>
+        <!-- Main Display Grid -->
+        <main class="terminal-grid">
+            <!-- Left Column: Holographic Visualizer -->
+            <section class="panel-left">
+                <!-- Search Form -->
+                <form id="search-form" onsubmit="searchPokemon(event)" class="search-box">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" name="search" placeholder="Nombre o ID del Pokémon..." autocomplete="off">
+                    </div>
+                    <button type="submit" class="cyber-btn btn-search">SCAN</button>
+                </form>
+
+                <!-- Holographic Display Screen -->
+                <div class="hologram-screen">
+                    <div class="screen-glare"></div>
+                    <div class="screen-lines"></div>
+                    <div class="screen-decorations">
+                        <span class="decor-tag top-left">SYS.VIEW_01</span>
+                        <span class="decor-tag top-right">REF_890A</span>
+                        <span class="decor-tag bottom-left">RADAR_INIT</span>
+                        <span class="decor-tag bottom-right">AUDIO_ZOOM</span>
+                    </div>
+
+                    <!-- Image Viewer -->
+                    <div class="pokemon-viewer">
+                        <img src="" alt="Cargando Pokémon..." id="poke-img">
+                    </div>
+
+                    <!-- Sprite Rotator & Audio Controls -->
+                    <div class="sprite-controls">
+                        <button class="icon-btn" onclick="prevImg()" title="Sprite Anterior">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                        <button class="cyber-btn-sm cry-btn" onclick="playCry()" title="Reproducir Grito">
+                            <i class="fa-solid fa-volume-high"></i> CRY
+                        </button>
+                        <button class="icon-btn" onclick="nextImg()" title="Siguiente Sprite">
+                            <i class="fa-solid fa-rotate-right"></i>
                         </button>
                     </div>
-                    <!-- <div class="section-div-botones_sec">
-                        <p>bones 2</p>
-                    </div> -->
-                </div>
-            </article>
-            <article class="pantalla-pokemones-card">
-                <!-- <p>sidebar</p> -->
-                <div class="pokemon-description">
-                <div class="poke-name">
-                    Nombre:<p class="pokemon-name" id="name"></p>
                 </div>
 
-                    <p id="desc"></p>
+                <!-- Main Navigate Controls -->
+                <div class="pokemon-navigator">
+                    <button class="cyber-btn nav-btn" onclick="prevPokemon()">
+                        <i class="fa-solid fa-chevron-left"></i> PREV
+                    </button>
+                    <div class="status-pill">INDEX_SCANNER</div>
+                    <button class="cyber-btn nav-btn" onclick="nextPokemon()">
+                        NEXT <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
+            </section>
 
-                <div class="pokemon-stats">
-
-                    <!-- ejemplo -->
-
-                    <div class="pokemon-ps">
-                        <span class="skills">PS</span>
-                        <!-- <div class="progress-bar progress-indv-ps">
-                          <span id="ps">0</span>
-                        </div>-->
-                      </div> 
-                      <div  class="progress  progress-indv-ps">
-                        <span id="ps" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></span>
-                      </div>
-
-                    <div class="damage">
-                        <span class="skills">Ataque</span>
-
-                        <div class="progress">
-                            <span id="dmg" class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></span>
-                          </div>
-                        <!-- <div class="progress-bar progress-indv-dmg">
-                            <span id="dmg">0</span>
-                        </div> -->
+            <!-- Right Column: Diagnostics & Stats -->
+            <section class="panel-right">
+                <!-- Name & Description Panel -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <h2 id="name" class="pokemon-title">#001 - ...</h2>
                     </div>
-
-                    <div class="pokemon-defense">
-                        <span class="skills">Defensa</span>
-
-                        <div class="progress">
-                            <span id="dfs" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>
-                          </div>
-
-                        <!-- <div class="progress-bar progress-indv-dfs">
-                            <span id="dfs">0</span>
-                        </div>
-                    </div> -->
-
-
-                    <div class="pokemon-speed">
-                        <span class="skills">Velocidad</span>
-                        <div class="progress">
-                            <span id="speed" class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></span>
-                          </div>
-                        <!-- <div class="progress-bar progress-indv-spd">
-                          <span id="speed"> 0 </span>
-                        </div> -->
-                      </div>
-                      
-                      
-
-                      <div class="pokemon-defense-sp">
-                        <span class="skills">Defensa especial</span>
-
-                        <div class="progress">
-                            <span id="sp-def" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></span>
-                          </div>
-                        <!-- <div class="progress-bar progress-indv-sdf">
-                          <span id="sp-def">0</span>
-                        </div> -->
-                      </div>
-
+                    <div class="description-box">
+                        <p id="desc">Inicializando sistema de diagnóstico. Cargando datos del espécimen...</p>
+                    </div>
                 </div>
 
-                <!-- <div class="pokedex-next">
-
-                </div> -->
-                <!-- <ul class="pokedex-evolution" id="evol">
-                    <p>mmm tal vez lo saque de article</p>
-                </ul> -->
-
-                <!-- <div class="pokebola-conatiner">
+                <!-- Stats Panel -->
+                <div class="stats-card">
+                    <h3 class="panel-subtitle">// ANÁLISIS DE ATRIBUTOS</h3>
                     
-                    <div  class="pokebola-link">
-                        <img src="./img/pokebola.png" alt="pokebola" class="pokebola inactive"><!--inactive-->
+                    <div class="stats-list">
+                        <!-- Stat: HP -->
+                        <div class="stat-row">
+                            <div class="stat-info">
+                                <span class="stat-label">PS</span>
+                                <span class="stat-val" id="ps-val">-</span>
+                            </div>
+                            <div class="custom-progress">
+                                <div class="progress-fill hp-color" id="ps" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat: Attack -->
+                        <div class="stat-row">
+                            <div class="stat-info">
+                                <span class="stat-label">ATAQUE</span>
+                                <span class="stat-val" id="dmg-val">-</span>
+                            </div>
+                            <div class="custom-progress">
+                                <div class="progress-fill attack-color" id="dmg" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat: Defense -->
+                        <div class="stat-row">
+                            <div class="stat-info">
+                                <span class="stat-label">DEFENSA</span>
+                                <span class="stat-val" id="dfs-val">-</span>
+                            </div>
+                            <div class="custom-progress">
+                                <div class="progress-fill defense-color" id="dfs" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat: Special Defense -->
+                        <div class="stat-row">
+                            <div class="stat-info">
+                                <span class="stat-label">DEF. ESP</span>
+                                <span class="stat-val" id="sp-def-val">-</span>
+                            </div>
+                            <div class="custom-progress">
+                                <div class="progress-fill sp-def-color" id="sp-def" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Stat: Speed -->
+                        <div class="stat-row">
+                            <div class="stat-info">
+                                <span class="stat-label">VELOCIDAD</span>
+                                <span class="stat-val" id="speed-val">-</span>
+                            </div>
+                            <div class="custom-progress">
+                                <div class="progress-fill speed-color" id="speed" style="width: 0%"></div>
+                            </div>
+                        </div>
                     </div>
-                </div> -->
-            </article>
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" class="pokebola-close"><path fill-rule="evenodd" d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm8.036-4.024a.75.75 0 00-1.06 1.06L10.939 12l-2.963 2.963a.75.75 0 101.06 1.06L12 13.06l2.963 2.964a.75.75 0 001.061-1.06L13.061 12l2.963-2.964a.75.75 0 10-1.06-1.06L12 10.939 9.036 7.976z"></path></svg> -->
-            <img src="./img/pokebola.png" alt="pokebola" class="pokebola">
+                </div>
+            </section>
+        </main>
+
+        <!-- Mid-Level Diagnostics: Spans full width dynamically -->
+        <section class="diagnostics-row">
+            <!-- Combat Type Effectiveness -->
+            <div class="stats-card">
+                <h3 class="panel-subtitle">// DIAGNÓSTICO DE COMBATE (MULTIPLICADORES)</h3>
+                <div id="effectiveness-container" class="effectiveness-box"></div>
+            </div>
+
+            <!-- Evolution Chain Panel -->
+            <div class="stats-card">
+                <h3 class="panel-subtitle">// SECUENCIA DE EVOLUCIÓN</h3>
+                <div id="evolutions-list" class="evolutions-grid"></div>
+            </div>
         </section>
 
-        <section class="section-list-pokemon" >
-            <div  class="list-pokemon-header">
-                <div class="logo-pokemon">
-                        <img src="./img/logo-pokemon-79x45.png" alt="logo pokemon">
+        <!-- Bottom Section: Database List -->
+        <section class="database-section">
+            <div class="database-header">
+                <div class="db-title-wrapper">
+                    <i class="fa-solid fa-database db-icon"></i>
+                    <h2>BASE DE DATOS COMPLETA</h2>
+                </div>
+                <!-- Filters dropdowns -->
+                <div class="db-filters">
+                    <select id="filter-type" class="cyber-select" aria-label="Filtrar por Tipo">
+                        <option value="all">TODOS LOS TIPOS</option>
+                        <option value="normal">Normal</option>
+                        <option value="fire">Fuego</option>
+                        <option value="water">Agua</option>
+                        <option value="electric">Eléctrico</option>
+                        <option value="grass">Planta</option>
+                        <option value="ice">Hielo</option>
+                        <option value="fighting">Lucha</option>
+                        <option value="poison">Veneno</option>
+                        <option value="ground">Tierra</option>
+                        <option value="flying">Volador</option>
+                        <option value="psychic">Psíquico</option>
+                        <option value="bug">Bicho</option>
+                        <option value="rock">Roca</option>
+                        <option value="ghost">Fantasma</option>
+                        <option value="dragon">Dragón</option>
+                        <option value="dark">Siniestro</option>
+                        <option value="steel">Acero</option>
+                        <option value="fairy">Hada</option>
+                    </select>
+                    <select id="filter-gen" class="cyber-select" aria-label="Filtrar por Generación">
+                        <option value="all">TODAS LAS GENERACIONES</option>
+                        <option value="1">Gen I (Kanto)</option>
+                        <option value="2">Gen II (Johto)</option>
+                        <option value="3">Gen III (Hoenn)</option>
+                        <option value="4">Gen IV (Sinnoh)</option>
+                        <option value="5">Gen V (Unova)</option>
+                        <option value="6">Gen VI (Kalos)</option>
+                        <option value="7">Gen VII (Alola)</option>
+                        <option value="8">Gen VIII (Galar)</option>
+                        <option value="9">Gen IX (Paldea)</option>
+                    </select>
+                </div>
+                <div class="database-nav">
+                    <button class="cyber-btn-sm" onclick="prevPokemons()" title="Anterior"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="cyber-btn-sm" onclick="nextPokemons()" title="Siguiente"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
-            <div class="section-list-buttons">
-                <button onclick="prevPokemons()"><i class="fa-solid fa-circle-arrow-left"></i> </button>
-                <button onclick="nextPokemons()"><i class="fa-solid fa-circle-arrow-right"></i></button>
+            <div class="pokemon-list-container">
+                <ul id="pokemons" class="pokemon-list-grid"></ul>
             </div>
-            <ul id="pokemons" class="container text-center"></ul>
         </section>
-    </main>
+    </div>
 
-    <footer></footer>
-    <!-- <footer>
-        
-    </footer> -->
-    <!-- <script src="./src/domElements.js"></script> -->
+    <!-- Background Decoration Grid -->
+    <div class="cyber-grid-overlay"></div>
+
+    <!-- Scripts -->
     <script src="./src/index.js"></script>
-    <!-- <script src="./src/domElements.js"></script> -->
-    <script src="./src/dom.js"></script>
-    <!-- BOOTSTRAP -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    <script>
+        // Observe mutation on the stats elements textContent to sync numerical value displays
+        const observeStat = (targetId, valueId) => {
+            const target = document.getElementById(targetId);
+            const valEl = document.getElementById(valueId);
+            if (target && valEl) {
+                const observer = new MutationObserver(() => {
+                    valEl.textContent = target.textContent;
+                });
+                observer.observe(target, { characterData: true, childList: true, subtree: true });
+            }
+        };
+        
+        // Setup theme toggle logic
+        const setupThemeToggle = () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-icon');
+            
+            // Check stored preference, default to dark
+            const storedTheme = localStorage.getItem('pokedex-theme') || 'dark';
+            if (storedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                icon.className = 'fa-solid fa-moon';
+            } else {
+                icon.className = 'fa-solid fa-sun';
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light-theme');
+                if (isLight) {
+                    localStorage.setItem('pokedex-theme', 'light');
+                    icon.className = 'fa-solid fa-moon';
+                } else {
+                    localStorage.setItem('pokedex-theme', 'dark');
+                    icon.className = 'fa-solid fa-sun';
+                }
+            });
+        };
+
+        // Setup simple DOM mutation syncs for stats labels
+        window.addEventListener('DOMContentLoaded', () => {
+            observeStat('ps', 'ps-val');
+            observeStat('dmg', 'dmg-val');
+            observeStat('dfs', 'dfs-val');
+            observeStat('sp-def', 'sp-def-val');
+            observeStat('speed', 'speed-val');
+            setupThemeToggle();
+        });
+    </script>
 </body>
 </html>
