@@ -29,8 +29,11 @@
                 </div>
             </div>
             <nav class="header-nav">
-                <button id="theme-toggle" class="cyber-btn-sm" aria-label="Toggle Theme" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
+                <button id="theme-toggle" class="cyber-btn-sm" aria-label="Toggle Theme" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;" title="Alternar Tema Claro/Oscuro">
                     <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+                <button id="hud-toggle" class="cyber-btn-sm" aria-label="Toggle HUD Mode" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;" title="Alternar Efecto Visor Holográfico">
+                    <i class="fa-solid fa-expand" id="hud-icon"></i>
                 </button>
                 <a href="https://github.com/Misael-GC" target="_blank" class="nav-icon" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/misael-g%C3%B3mez-cuautle-5976491b9/" target="_blank" class="nav-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -310,6 +313,25 @@
         </section>
     </div>
 
+    <!-- HUD Hologram overlays -->
+    <div class="hud-scanlines"></div>
+
+    <!-- Cyber Modal Window -->
+    <div id="cyber-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header-cyber">
+                <span class="modal-title-cyber">// ERROR DE DIAGNÓSTICO</span>
+                <button class="modal-close-cyber" onclick="closeCyberModal()">&times;</button>
+            </div>
+            <div class="modal-body-cyber">
+                <p id="modal-message-cyber">Mensaje del sistema...</p>
+            </div>
+            <div class="modal-footer-cyber">
+                <button class="cyber-btn-sm" onclick="closeCyberModal()">ENTENDIDO</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Background Decoration Grid -->
     <div class="cyber-grid-overlay"></div>
 
@@ -354,6 +376,33 @@
             });
         };
 
+        // Setup HUD visor scanline overlay toggle
+        const setupHUDToggle = () => {
+            const toggleBtn = document.getElementById('hud-toggle');
+            const icon = document.getElementById('hud-icon');
+            
+            // Check stored preference, default to inactive (no class)
+            const storedHUD = localStorage.getItem('pokedex-hud') || 'inactive';
+            if (storedHUD === 'active') {
+                document.body.classList.add('hud-active');
+                icon.className = 'fa-solid fa-compress';
+            } else {
+                icon.className = 'fa-solid fa-expand';
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                const isActive = document.body.classList.toggle('hud-active');
+                playSound('scan');
+                if (isActive) {
+                    localStorage.setItem('pokedex-hud', 'active');
+                    icon.className = 'fa-solid fa-compress';
+                } else {
+                    localStorage.setItem('pokedex-hud', 'inactive');
+                    icon.className = 'fa-solid fa-expand';
+                }
+            });
+        };
+
         // Setup simple DOM mutation syncs for stats labels
         window.addEventListener('DOMContentLoaded', () => {
             observeStat('ps', 'ps-val');
@@ -362,6 +411,7 @@
             observeStat('sp-def', 'sp-def-val');
             observeStat('speed', 'speed-val');
             setupThemeToggle();
+            setupHUDToggle();
         });
     </script>
 </body>

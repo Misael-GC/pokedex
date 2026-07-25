@@ -658,8 +658,7 @@ const searchPokemon = (e) => {
             input.value = '';
         })
         .catch(() => {
-            playSound('error');
-            alert('Pokémon no encontrado. Intenta con otro nombre o ID.');
+            showCyberModal('Pokémon no encontrado. Intenta con otro nombre o ID.');
         });
 };
 
@@ -691,3 +690,23 @@ const setupFilters = () => {
 printPokemon(1);
 loadPokemonList();
 setupFilters();
+
+// Global Cyber Modal helpers
+window.showCyberModal = (message) => {
+    const modal = document.getElementById('cyber-modal');
+    const msgEl = document.getElementById('modal-message-cyber');
+    if (modal && msgEl) {
+        msgEl.textContent = message;
+        modal.classList.add('active');
+        playSound('error');
+    }
+};
+
+window.closeCyberModal = () => {
+    const modal = document.getElementById('cyber-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        playSound('click');
+    }
+};
+
