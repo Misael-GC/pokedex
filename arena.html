@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena de Combate 3v3 // Terminal OS</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/a3356dc614.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="./img/pokebola.png">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="terminal-container">
+        <!-- Terminal Header -->
+        <header class="terminal-header">
+            <div class="header-left">
+                <div class="pulse-indicator">
+                    <span class="pulse-core"></span>
+                    <span class="pulse-ring"></span>
+                </div>
+                <div class="terminal-title">
+                    <h1>ARENA DE COMBATE // 3V3</h1>
+                    <span class="terminal-status">SYSTEM_ONLINE // WAR_ROOM_CONN</span>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="./index.html" class="cyber-btn-sm" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; text-decoration: none; color: var(--text-muted);" title="Volver a la Pokédex">
+                    <i class="fa-solid fa-square-poll-horizontal"></i>
+                </a>
+                <button id="theme-toggle" class="cyber-btn-sm" aria-label="Toggle Theme" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;" title="Alternar Tema Claro/Oscuro">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+                <button id="hud-toggle" class="cyber-btn-sm" aria-label="Toggle HUD Mode" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;" title="Alternar Efecto Visor Holográfico">
+                    <i class="fa-solid fa-expand" id="hud-icon"></i>
+                </button>
+            </nav>
+        </header>
+
+        <!-- SELECTION PHASE PANEL -->
+        <section id="selection-phase" class="stats-card selection-dashboard">
+            <h2 class="panel-subtitle">// REGISTRO DE ESCUADRONES (3 VS 3)</h2>
+            <div class="selection-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                <!-- Player squad builder -->
+                <div class="squad-builder-box" style="border-right: 1px dashed var(--border-color); padding-right: 15px;">
+                    <h3 class="panel-subtitle" style="color: var(--neon-green);">[ EQUIPO A - USUARIO ]</h3>
+                    <form id="add-member-a" onsubmit="addSquadMember(event, 'A')" class="search-box" style="margin-bottom: 15px;">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-shield-halved search-icon"></i>
+                            <input type="text" name="pokemon" placeholder="Nombre o ID del Pokémon..." autocomplete="off">
+                        </div>
+                        <button type="submit" class="cyber-btn-sm">AÑADIR</button>
+                    </form>
+                    <div id="squad-a-list" class="squad-preview-container" style="display: flex; gap: 10px; min-height: 110px;">
+                        <!-- JS Loaded -->
+                    </div>
+                </div>
+
+                <!-- Opponent squad builder -->
+                <div class="squad-builder-box">
+                    <h3 class="panel-subtitle" style="color: var(--neon-red);">[ EQUIPO B - CPU ]</h3>
+                    <div class="opponent-controls" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                        <form id="add-member-b" onsubmit="addSquadMember(event, 'B')" class="search-box" style="flex: 1; min-width: 150px; margin-bottom: 0;">
+                            <div class="search-input-wrapper">
+                                <i class="fa-solid fa-crosshairs search-icon"></i>
+                                <input type="text" name="pokemon" placeholder="Nombre o ID del Pokémon..." autocomplete="off">
+                            </div>
+                            <button type="submit" class="cyber-btn-sm">AÑADIR</button>
+                        </form>
+                        <button type="button" class="cyber-btn btn-auto" onclick="autoGenerateOpponents()" style="padding: 6px 12px; font-size: 0.75rem;">AUTO RIVALES</button>
+                    </div>
+                    <div id="squad-b-list" class="squad-preview-container" style="display: flex; gap: 10px; min-height: 110px;">
+                        <!-- JS Loaded -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start button -->
+            <div class="selection-footer" style="text-align: center; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <button id="start-arena-btn" class="cyber-btn" onclick="initializeArenaFight()" disabled style="font-size: 1.1rem; padding: 15px 40px; border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);">INICIAR SIMULACIÓN DE COMBATE</button>
+            </div>
+        </section>
+
+        <!-- BATTLE ARENA BOARD -->
+        <section id="battle-phase" class="battle-arena-board" style="display: none;">
+            <div class="diagnostics-row">
+                <!-- Squad A Active Panel -->
+                <div class="stats-card team-panel active-team-a" style="position: relative;">
+                    <h3 class="panel-subtitle" style="color: var(--neon-green);">// JUGADOR ACTIVO</h3>
+                    <div class="arena-fighter-card">
+                        <div class="reserve-pills" id="reserve-a-pills" style="display: flex; gap: 8px; margin-bottom: 12px;"></div>
+                        <div class="hologram-screen" style="min-height: 220px; border-color: rgba(0, 255, 135, 0.25);">
+                            <div class="screen-lines"></div>
+                            <div class="pokemon-viewer">
+                                <img id="fighter-a-img" src="" alt="Fighter A">
+                            </div>
+                        </div>
+                        <div class="fighter-stats" style="margin-top: 15px;">
+                            <span id="fighter-a-name" class="pokemon-title" style="border-left-color: var(--neon-green); font-size: 1.1rem;">-</span>
+                            <div class="custom-progress" style="height: 10px; background-color: rgba(255,255,255,0.05); margin-top: 10px;">
+                                <div id="fighter-a-hp" class="progress-fill hp-color" style="width: 100%; background-color: var(--neon-green); color: var(--neon-green);"></div>
+                            </div>
+                            <span id="fighter-a-hp-text" style="font-family: var(--font-cyber); font-size: 0.65rem; color: var(--text-muted); display: block; text-align: right; margin-top: 4px;">100 / 100 HP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Squad B Active Panel -->
+                <div class="stats-card team-panel active-team-b" style="position: relative;">
+                    <h3 class="panel-subtitle" style="color: var(--neon-red);">// RIVAL ACTIVO</h3>
+                    <div class="arena-fighter-card">
+                        <div class="reserve-pills" id="reserve-b-pills" style="display: flex; gap: 8px; margin-bottom: 12px;"></div>
+                        <div class="hologram-screen" style="min-height: 220px; border-color: rgba(255, 0, 91, 0.25);">
+                            <div class="screen-lines"></div>
+                            <div class="pokemon-viewer">
+                                <img id="fighter-b-img" src="" alt="Fighter B">
+                            </div>
+                        </div>
+                        <div class="fighter-stats" style="margin-top: 15px;">
+                            <span id="fighter-b-name" class="pokemon-title" style="border-left-color: var(--neon-red); font-size: 1.1rem;">-</span>
+                            <div class="custom-progress" style="height: 10px; background-color: rgba(255,255,255,0.05); margin-top: 10px;">
+                                <div id="fighter-b-hp" class="progress-fill hp-color" style="width: 100%; background-color: var(--neon-red); color: var(--neon-red);"></div>
+                            </div>
+                            <span id="fighter-b-hp-text" style="font-family: var(--font-cyber); font-size: 0.65rem; color: var(--text-muted); display: block; text-align: right; margin-top: 4px;">100 / 100 HP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Feed & Controls -->
+            <section class="diagnostics-row" style="margin-top: 25px;">
+                <!-- Moves Controls -->
+                <div class="stats-card" style="flex: 1.2;">
+                    <h3 class="panel-subtitle" id="action-panel-title">// CONTROL DE COMBATE</h3>
+                    <div id="arena-actions" class="battle-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; align-content: center;">
+                        <!-- JS Attacks -->
+                    </div>
+                </div>
+
+                <!-- Battle log terminal -->
+                <div class="stats-card" style="flex: 2;">
+                    <h3 class="panel-subtitle">// HISTORIAL DE EVENTOS DEL COMBATE</h3>
+                    <div id="arena-log" style="height: 180px; background-color: #03060c; border: 1px solid rgba(0,242,254,0.1); border-radius: 4px; padding: 12px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; color: #00f2fe; line-height: 1.5; display: flex; flex-direction: column; gap: 5px;">
+                        <!-- Logs -->
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <!-- HUD Hologram overlays -->
+    <div class="hud-scanlines"></div>
+
+    <!-- Cyber Modal Window -->
+    <div id="cyber-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header-cyber">
+                <span class="modal-title-cyber" id="cyber-modal-title">// ERROR DE DIAGNÓSTICO</span>
+                <button class="modal-close-cyber" onclick="closeCyberModal()">&times;</button>
+            </div>
+            <div class="modal-body-cyber">
+                <p id="modal-message-cyber">Mensaje del sistema...</p>
+            </div>
+            <div class="modal-footer-cyber">
+                <button class="cyber-btn-sm" onclick="closeCyberModal()">ENTENDIDO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Decoration Grid -->
+    <div class="cyber-grid-overlay"></div>
+
+    <!-- Scripts -->
+    <script src="./src/arena.js"></script>
+    <script>
+        // Setup theme toggle logic
+        const setupThemeToggle = () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-icon');
+            
+            const storedTheme = localStorage.getItem('pokedex-theme') || 'dark';
+            if (storedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                icon.className = 'fa-solid fa-moon';
+            } else {
+                icon.className = 'fa-solid fa-sun';
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light-theme');
+                if (isLight) {
+                    localStorage.setItem('pokedex-theme', 'light');
+                    icon.className = 'fa-solid fa-moon';
+                } else {
+                    localStorage.setItem('pokedex-theme', 'dark');
+                    icon.className = 'fa-solid fa-sun';
+                }
+            });
+        };
+
+        // Setup HUD visor scanline overlay toggle
+        const setupHUDToggle = () => {
+            const toggleBtn = document.getElementById('hud-toggle');
+            const icon = document.getElementById('hud-icon');
+            
+            const storedHUD = localStorage.getItem('pokedex-hud') || 'inactive';
+            if (storedHUD === 'active') {
+                document.body.classList.add('hud-active');
+                icon.className = 'fa-solid fa-compress';
+            } else {
+                icon.className = 'fa-solid fa-expand';
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                const isActive = document.body.classList.toggle('hud-active');
+                if (isActive) {
+                    localStorage.setItem('pokedex-hud', 'active');
+                    icon.className = 'fa-solid fa-compress';
+                } else {
+                    localStorage.setItem('pokedex-hud', 'inactive');
+                    icon.className = 'fa-solid fa-expand';
+                }
+            });
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setupThemeToggle();
+            setupHUDToggle();
+        });
+    </script>
+</body>
+</html>
